@@ -12,8 +12,11 @@ Start here: `source catalytics.sh -h`
 
 ### Examples
 
-Run on the "e2e_test" directory
-`source catalytics.sh --dir ./e2e_test/` 
+#### Run on the "e2e_test" directory
+`source catalytics.sh --dir ./e2e_test/`
+
+#### List all the file extensions to be found in a directory
+`source catalytics.sh --dir "e2e_test" -list_ext`
 
 ## Tests
 
@@ -29,12 +32,18 @@ Just a few in place
 ## To Do
 
 - get e2e_test working
-- iN PROGRESS - exclude _category_.json from counts
+  - The rollup currently doesnt work, not sure of the best strategy for this
+    - CharCount functions (& docCount) originally did the recursion with /* , but now   we are filtering files. catalytics() will need to change as well as 
+    - Ideas:
+      - Post order recurse 
+      - 
+- In Progress - write excludeCategoryJson
 - post run analysis
 
 ### Execution Flags
 
 - `-ext_excl / -ext_incl <extensions including dot>`: Exclude / include specific file types
+
 
 #### Post Run Analysis
 
