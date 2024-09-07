@@ -1,0 +1,28 @@
+{
+  "label": "f1",
+  "link": {
+    "type": "generated-index",
+    "description": "PK_ToDo Write Description"
+  },
+  "catalytics": {
+    "overall": {
+      "docCount": 2,
+      "characterCount": 546,
+      "docCountSelf": 2,
+      "characterCountSelf": 546,
+      "hasSubdirectories": false
+    },
+    "docs": [
+      {
+        "filename": "_category_.json",
+        "characterCount": 529
+      },
+      {
+        "filename": "formula1.json",
+        "characterCount": 17
+      }
+    ],
+    "subDirs": []
+  },
+  "exclude": true
+}

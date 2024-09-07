@@ -1,0 +1,32 @@
+{
+  "label": "shenans",
+  "link": {
+    "type": "generated-index",
+    "description": "PK_ToDo Write Description"
+  },
+  "catalytics": {
+    "overall": {
+      "docCount": 3,
+      "characterCount": 664,
+      "docCountSelf": 3,
+      "characterCountSelf": 664,
+      "hasSubdirectories": false
+    },
+    "docs": [
+      {
+        "filename": "_category_.json",
+        "characterCount": 611
+      },
+      {
+        "filename": "doctors.md",
+        "characterCount": 33
+      },
+      {
+        "filename": "inject.sql",
+        "characterCount": 20
+      }
+    ],
+    "subDirs": []
+  },
+  "exclude": true
+}

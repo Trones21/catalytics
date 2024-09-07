@@ -1,0 +1,35 @@
+{
+  "label": "sampleDir",
+  "link": {
+    "type": "generated-index",
+    "description": "PK_ToDo Write Description"
+  },
+  "catalytics": {
+    "overall": {
+      "docCount": 2,
+      "characterCount": 638,
+      "docCountSelf": 2,
+      "characterCountSelf": 638,
+      "hasSubdirectories": true
+    },
+    "docs": [
+      {
+        "filename": "_category_.json",
+        "characterCount": 632
+      },
+      {
+        "filename": "something.txt",
+        "characterCount": 6
+      }
+    ],
+    "subDirs": [
+      {
+        "subDirName": "f1"
+      },
+      {
+        "subDirName": "shenans"
+      }
+    ]
+  },
+  "exclude": false
+}
