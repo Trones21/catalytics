@@ -5,20 +5,20 @@ calculate_character_count() {
 }
 
 # Function to recursively calculate total character count in a directory
-calculate_total_character_count() {
-  local dir="$1"
-  local total_count=0
+# calculate_total_character_count() {
+#   local dir="$1"
+#   local total_count=0
 
-  for file in "$dir"/*; do
-    if [ -f "$file" ]; then
-      total_count=$((total_count + $(calculate_character_count "$file")))
-    elif [ -d "$file" ]; then
-      total_count=$((total_count + $(calculate_total_character_count "$file")))
-    fi
-  done
+#   for file in "$dir"/*; do
+#     if [ -f "$file" ]; then
+#       total_count=$((total_count + $(calculate_character_count "$file")))
+#     elif [ -d "$file" ]; then
+#       total_count=$((total_count + $(calculate_total_character_count "$file")))
+#     fi
+#   done
 
-  echo "$total_count"
-}
+#   echo "$total_count"
+# }
 
 
 filterFilesByExtension() {

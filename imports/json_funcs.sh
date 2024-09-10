@@ -75,3 +75,8 @@ update_category_json_catalytics_props() {
   '.catalytics = $catalytics | .exclude = $exclude' \
   "$category_file" > "$tmp_file" && mv "$tmp_file" "$category_file"
 }
+
+
+testFunc(){
+ echo "Test func from json_funcs"
+}

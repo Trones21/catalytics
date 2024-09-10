@@ -1,11 +1,21 @@
+#!/bin/bash
+# Source the resolve_import.sh script
+source "$(dirname "${BASH_SOURCE[0]}")/resolve_import.sh"
+
+json_funcs=$(resolve_import "json_funcs.sh") && source "$json_funcs"
+helpers=$(resolve_import "helpers.sh") && source "$helpers"
+
 # Main Category Analytics code
+### Does file filtering, then counts, builds json 
+### Finally writes file through call to update_category_json_catalytics_props
 catalytics() {
     #Parse Params
     local dir="$1"
     local childrenCharCount=$2
     local childrenFileCount=$3
-    local includeOrExclude="$4"
-    local $extensions="$5"
+    local extensions="$4"
+    local includeOrExclude="$5"
+    
 
     #Additional Vars
     local docCountSelf=0
@@ -20,16 +30,17 @@ catalytics() {
     ignoreCategoryJson filesToAnalyze # Modifies filesToAnalyze in place
 
     # Count documents and calculate character counts
-    for file in "{$filesToAnalyze[@]}"; do
+    for file in "${filesToAnalyze[@]}"; do
+        echo "outer{$file}"
         if [ -f "$file" ]; then
-        docCountSelf=$((docCount + 1))
-        characterCountSelf=$((characterCount + $(calculate_character_count "$file")))
+        docCountSelf=$(($docCountSelf + 1))
+        characterCountSelf=$(($characterCountSelf + $(calculate_character_count "$file")))
         docs+=("{\"filename\": \"$(basename "$file")\", \"characterCount\": $(calculate_character_count "$file")}")
         fi
     done
-
-    local docCount=$docCountSelf + $childrenFileCount
-    local characterCount=$characterCountSelf + $childrenCharCount
+    echo "count complete"
+    local docCount=($docCountSelf+$childrenFileCount)
+    local characterCount=($characterCountSelf+$childrenCharCount)
 
     # Check for subdirectories
     for subDir in "$dir"/*/; do
@@ -39,6 +50,7 @@ catalytics() {
         fi
     done
 
+    echo "start json"
     # Generate the JSON template with all the values
     catalytics_object=$(cat <<EOF
         {
@@ -58,6 +70,8 @@ catalytics() {
         }
 EOF
 )
+    echo $catalytics_object
+    echo "call writer"
     update_category_json_catalytics_props "$dir" "$catalytics_object" "$exclude" 
   
 }
