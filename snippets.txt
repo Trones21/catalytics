@@ -1,0 +1,8 @@
+    # Calculate the total character count for the entire directory including children
+    totalCharacterCount=$(calculate_total_character_count "$dir")
+    echo "$dir Files: $docCount Chars: $totalCharacterCount"
+    # Determine if the directory should be excluded based on the threshold
+    exclude=false
+    if [ "$totalCharacterCount" -lt "$THRESHOLD" ]; then
+      exclude=true
+    fi

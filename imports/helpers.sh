@@ -95,8 +95,14 @@ filterDirFilesByExtension() {
 }
 
 
-ignoreCategoryJson(){
-  local fileNamesIn="$1"
-  local -n fileNamesOut=$2
+ignoreCategoryJson() {
+  local -n urisIn=$1  # Pass by reference, modify in place
 
+  # Iterate backwards so popping items won't affect indices of earlier items
+  for ((i=${#urisIn[@]}-1; i>=0; i--)); do
+    if [[ $(basename "${urisIn[i]}") == "_category_.json" ]]; then
+      unset 'urisIn[i]'  # Remove item in place
+    fi
+  done
 }
+

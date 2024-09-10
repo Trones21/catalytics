@@ -16,8 +16,6 @@ if [ "$CURRENT_DIR" != "$SCRIPT_DIR" ]; then
   echo "Changed directory to: $SCRIPT_DIR"
 fi
 
-# This currently only tests one of the code paths (include specific).. which isnt even the way we call it in the main script lol 
-
 ## === Arrange === ## 
 
 #Make temp directory for files supporting the test 
