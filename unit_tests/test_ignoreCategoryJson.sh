@@ -43,3 +43,7 @@ test_ignoreCategoryJson() {
 else
     test_ignoreCategoryJson
  fi
+
+
+#Added this because some syntax errors can cause the script to silently stop executing
+echo "End of Tests: $(basename "$0")" 

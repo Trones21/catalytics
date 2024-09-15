@@ -7,8 +7,8 @@ if [ -d "_temp_/process_dir" ]; then
   rm -rf "_temp_/process_dir"
 fi
 
-mkdir "_temp_/process_dir"
-cd "_temp_/process_dir"
+mkdir -p "_temp_/process_dir"
+cd "_temp_/process_dir/"
 # Make a relatively complicated structure 
 mkdir -p "root/a/a1"
 mkdir -p "root/b/b1"
@@ -21,3 +21,9 @@ process_directory $dir ".md" "include" 0 0 0
 
 ## === Assert === ## 
 echo "Failed Failed Failed -- Haven't even finsihed writing the function yet"
+
+
+
+
+#Added this because some syntax errors can cause the script to silently stop executing
+echo "End of Tests: $(basename "$0")" 

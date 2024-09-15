@@ -53,18 +53,34 @@ expected_hasSubdirectories=false
 cd ../../
 ## echo "$(pwd)"
 
-actualDCSelf=$(jq '.catalytics.overall.docCountSelf' $jsonUri)
-if [[ "$actualDCSelf" == "null" ]]; then
-    echo "Case Failed .catalytics.overall.docCountSelf is not present in _category_.json"
+## Check 1: Was the catalytics object populated?
+echo "Running Check 1: Was the catalytics object populated?"
+actual_catalytics=$(jq '.catalytics' $jsonUri)
+
+if [[ "$actual_catalytics" == "null" ]]; then
+    echo "Check Failed .catalytics is not present in _category_.json"
 else 
-  if [[ $actualDCSelf -eq $expected_docCountSelf ]]; then
-      echo "Case Passed"
-  else 
-      echo "Case Failed - Actual: ${actualDCSelf} Expected: ${expected_docCountSelf}"
-  fi
+    echo "Check Passed"
 fi
 
-## Check that we have the updated arrays 
+## Check 2: Path written correctly 
+echo "Running Check 2: Was the path property written correctly?"
+actual=$(jq -r '.catalytics.myPath' $jsonUri)
+expected="_temp_/catalyticsfunc/"
+
+if [[ $actual == $expected ]]; then
+    echo "Check Passed"
+else 
+    echo "Check Failed: - Actual: ${actual} Expected: ${expected}"
+fi
+
+## Check 3: Did the docs array populate correctly?
+echo "Running Check 3: Did the docs array populate correctly?"
+echo "Check 3 Failed -- To be implemented"
+
+## Check 4: Did the subDirs array populate correctly?
+echo "Running Check 4: Did the subDirs array populate correctly?"
+echo "Check 4 Failed -- To be implemented"
 
 ## print category.json for verbose output
 if [[ "$1" == "-v" ]]; then
@@ -78,3 +94,5 @@ cd $START_DIR
 # Remove temp directories and files
 
 
+#Added this because some syntax errors can cause the script to silently stop executing
+echo "End of Tests: $(basename "$0")" 

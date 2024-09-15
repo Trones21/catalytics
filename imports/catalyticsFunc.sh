@@ -10,7 +10,7 @@ helpers=$(resolve_import "helpers.sh") && source "$helpers"
 ### Finally writes file through call to update_category_json_catalytics_props
 catalytics() {
     # Parse Params
-    local dir="$1"
+    local dir="$1" # let's say this takes the full path?
     local -i childrenCharCount=$2
     local -i childrenFileCount=$3
     local extensions="$4"
@@ -30,7 +30,7 @@ catalytics() {
 
     # Count documents and calculate character counts
     for file in "${filesToAnalyze[@]}"; do
-        if [ -f "$file" ]; then
+        if [[ -f "$file" ]]; then
         docCountSelf=$(($docCountSelf + 1))
         characterCountSelf=$(($characterCountSelf + $(calculate_character_count "$file")))
         docs+=("{\"filename\": \"$(basename "$file")\", \"characterCount\": $(calculate_character_count "$file")}")
@@ -42,23 +42,23 @@ catalytics() {
 
     # Check for subdirectories
     for subDir in "$dir"/*/; do
-        if [ -d "$subDir" ]; then
+        if [[ -d "$subDir" ]]; then
         hasSubdirectories=true
         subDirs+=("{\"subDirName\": \"$(basename "$subDir")\"}")
         fi
     done
     
-    runDateTime=$(date +"%Y-%m-%d %H:%M:%S")
+    runDatetime="$(date +"%Y-%m-%d %H:%M:%S")"
 
     #### Generate the JSON template with all the values 
+    # always cast to string if the variable could potentially have spaces 
     catalytics_object=$(cat <<EOF
  {
-            "overall": {
-            "runDatetime": $runDateTime,
-            "docCount": $docCount,
-            "characterCount": $characterCount,
-            "hasSubdirectories": $hasSubdirectories
-            },
+            "myPath": "$dir",
+            "runDatetime": "$runDatetime",
+            "docCountSelf": $docCount,
+            "characterCountSelf": $characterCount,
+            "hasSubdirectories": $hasSubdirectories,
             "docs": [
             $(IFS=,; echo "${docs[*]}")
             ],
@@ -74,4 +74,3 @@ update_category_json_catalytics_props "$dir" "$catalytics_object" "false"
   
 }
 
-# $(IFS=,; echo "${subDirs[*]}")

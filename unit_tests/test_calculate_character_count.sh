@@ -27,3 +27,6 @@ fi
 #Cleanup
 cd ../../
 rm -rf './_temp_/'
+
+#Added this because some syntax errors can cause the script to silently stop executing
+echo "End of Tests: $(basename "$0")" 

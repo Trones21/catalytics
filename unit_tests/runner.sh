@@ -35,7 +35,8 @@ colorize_output() {
 
   # Default behavior: colorize specific keywords "Failed" and "Passed"
     sed -e "s/Failed/$(printf $RED)&$(printf $RESET)/g" \
-        -e "s/Passed/$(printf $GREEN)&$(printf $RESET)/g"
+        -e "s/Passed/$(printf $GREEN)&$(printf $RESET)/g" \
+        -e "s/End of Tests/$(printf $BLUE)&$(printf $RESET)/g" 
   fi
 }
 
