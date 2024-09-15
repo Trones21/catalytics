@@ -16,6 +16,12 @@ if [ "$START_DIR" != "$SCRIPT_DIR" ]; then
   echo "Changed directory to: $SCRIPT_DIR"
 fi
 
+##### ========================================================= #####
+## === Test 1: Just the basics - Writing Properties === ##
+##### ========================================================= #####
+echo ""
+echo "Running Test 1: Writing Properties"
+
 ## === Arrange === ## 
 
 # Make temp directory for files supporting the test 
@@ -52,11 +58,10 @@ runDatetime=$(date +"%Y-%m-%d %H:%M:%S")
 #always cast to string if the variable could potentially have spaces  
 catalytics_object=$(cat <<EOF
         {
-            "myPath":
             "runDatetime": "$runDatetime",
             "docCount": $docCount,
             "characterCount": $characterCount,
-            "hasSubdirectories": $hasSubdirectories
+            "hasSubdirectories": $hasSubdirectories,
             "docs": [
             $(IFS=,; echo "${docs[*]}")
             ],
@@ -101,8 +106,10 @@ fi
 
 cd ../../../
 ##### ========================================================= #####
-## === Test 2: Spaces === ##
+## === Test 2: Writing when there are Spaces === ##
 ##### ========================================================= #####
+echo ""
+echo "Running Test 2: Writing when there are Spaces (Actually creates dir & file with spaces in name)"
 dirForThisTest="_temp_/jq_testing/test_2"
 # Cleanup Potential Existing
 if [ -d $dirForThisTest ]; then
@@ -159,11 +166,11 @@ update_category_json_catalytics_props "$(pwd)" "$catalytics_object" "true"
 ## Check 1: Dir with space
 echo "Running Check 1: Directory with space written properly?"
 expectedDirName="d i r"
-dirNameWritten=$(jq '.catalytics.subDirs[0]' $fileUri)
+dirNameWritten=$(jq -r '.catalytics.subDirs[0].subDirName' $fileUri)
 if [[ "$dirNameWritten" == "null" ]]; then
     echo "Check Failed: .catalytics.subDirs[0] is not present in _category_.json"
 else 
-    if [[ $dirNameWritten -eq $expectedDirName ]]; then
+    if [[ "$dirNameWritten" == "$expectedDirName" ]]; then
         echo "Check Passed"
     else 
         echo "Check Failed: - Actual: ${dirNameWritten} Expected: ${expectedDirName}"
@@ -173,11 +180,11 @@ fi
 ## Check 2: Filename with space
 echo "Running Check 2: Filename with space written properly?"
 expected="s p a c e"
-actual=$(jq '.catalytics.docsSelf[1].filename' $fileUri) #idx 1 b/c category.json not exlcuded in test
+actual=$(jq -r '.catalytics.docsSelf[1].filename' $fileUri) #idx 1 b/c category.json not exlcuded in test
 if [[ "$expected" == "null" ]]; then
     echo "Check Failed: .catalytics.docsSelf[1].filename is not present in _category_.json"
 else 
-    if [[ $expected -eq $actual ]]; then
+    if [[ $expected == $actual ]]; then
         echo "Check Passed"
     else 
         echo "Check Failed: - Actual: ${actual} Expected: ${expected}"
