@@ -1,5 +1,9 @@
-source ./catalyticsFunc.sh
-source ./json_funcs.sh
+#!/bin/bash
+# Source the resolve_import.sh script
+source "$(dirname "${BASH_SOURCE[0]}")/resolve_import.sh"
+
+json_funcs=$(resolve_import "json_funcs.sh") && source "$json_funcs"
+catalyticsFunc=$(resolve_import "catalyticsFunc.sh") && source "$catalyticsFunc"
 
 process_directory() {
   local dir="$1"
@@ -7,7 +11,7 @@ process_directory() {
   local includeOrExclude="$3"
   local childrenCharCount=$4
   local childrenFileCount=$5
-  local -n retChildrenFileCount=
+  local -n retChildrenFileCount=$6
   
   # Step 3: Recursively process subdirectories (Post-Order Processing)
   for subdir in "$dir"/*/; do

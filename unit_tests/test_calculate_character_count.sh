@@ -26,4 +26,4 @@ fi
 
 #Cleanup
 cd ../../
-echo "$(pwd)"
+rm -rf './_temp_/'

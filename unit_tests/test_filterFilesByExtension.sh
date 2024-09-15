@@ -8,8 +8,8 @@ echo
 
 run_tests() {
 
-    ## === Test 1: Include only .md and .cpp files === ##
-    echo "Running Test 1: Include only .md and .cpp files"
+    ## === Case 1: Include only .md and .cpp files === ##
+    echo "Running Case 1: Include only .md and .cpp files"
     filesToAnalyze=("/path/to/file1.txt" "/path/to/file2.md" "/path/to/file3.sql" "/path/to/file4.cpp")
     expected_files=("/path/to/file2.md" "/path/to/file4.cpp")
     filesOut=()
@@ -23,15 +23,15 @@ run_tests() {
     expected="${expected_files[@]}"
     
     if [ "$expected" == "$actual_files" ]; then
-        echo "Test 1 Passed"
+        echo "Case 1 Passed"
     else
-        echo "Test 1 Failed"
+        echo "Case 1 Failed"
         echo "Expected: $expected"
         echo "Actual: $actual_files"
     fi
 
-    ## === Test 2: Exclude .md and .cpp files === ##
-    echo "Running Test 2: Exclude .md and .cpp files"
+    ## === Case 2: Exclude .md and .cpp files === ##
+    echo "Running Case 2: Exclude .md and .cpp files"
     expected_files=("/path/to/file1.txt" "/path/to/file3.sql")
     filesOut=()
     extensions="md,cpp"
@@ -44,15 +44,15 @@ run_tests() {
     expected="${expected_files[@]}"
     
     if [ "$expected" == "$actual_files" ]; then
-        echo "Test 2 Passed"
+        echo "Case 2 Passed"
     else
-        echo "Test 2 Failed"
+        echo "Case 2 Failed"
         echo "Expected: $expected"
         echo "Actual: $actual_files"
     fi
 
-    ## === Test 3: Empty extensions (include everything) === ##
-    echo "Running Test 3: Include everything with empty extensions"
+    ## === Case 3: Empty extensions (include everything) === ##
+    echo "Running Case 3: Include everything with empty extensions"
     expected_files=("${filesToAnalyze[@]}")
     filesOut=()
     extensions=""
@@ -65,15 +65,15 @@ run_tests() {
     expected="${expected_files[@]}"
     
     if [ "$expected" == "$actual_files" ]; then
-        echo "Test 3 Passed"
+        echo "Case 3 Passed"
     else
-        echo "Test 3 Failed"
+        echo "Case 3 Failed"
         echo "Expected: $expected"
         echo "Actual: $actual_files"
     fi
 
-    ## === Test 4: Invalid mode (should return an error) === ##
-    echo "Running Test 4: Invalid include_or_exclude mode"
+    ## === Case 4: Invalid mode (should return an error) === ##
+    echo "Running Case 4: Invalid include_or_exclude mode"
     filesOut=()
     extensions="md,cpp"
     
@@ -82,13 +82,13 @@ run_tests() {
     
     # Assert
     if [[ "$output" == *"ERROR: The fourth parameter must be either 'include' or 'exclude'."* ]]; then
-        echo "Test 4 Passed"
+        echo "Case 4 Passed"
     else
-        echo "Test 4 Failed"
+        echo "Case 4 Failed"
     fi
 
-    ## === Test 5: Passing an extension with leading dot (should return an error) === ##
-    echo "Running Test 5: Extension with leading dot"
+    ## === Case 5: Passing an extension with leading dot (should return an error) === ##
+    echo "Running Case 5: Extension with leading dot"
     filesOut=()
     extensions=".md"
     
@@ -97,9 +97,9 @@ run_tests() {
     
     # Assert
     if [[ "$output" == *"ERROR: You passed in an extension with a leading dot."* ]]; then
-        echo "Test 5 Passed"
+        echo "Case 5 Passed"
     else
-        echo "Test 5 Failed output: $output"
+        echo "Case 5 Failed output: $output"
     fi
 }
 

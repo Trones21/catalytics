@@ -25,37 +25,56 @@ mkdir -p "$dirForThisTest"
 cd "$dirForThisTest"
 
 # Add Files 
+#Remember that echo adds an extra character at the end
 echo "test" > test.txt
-echo "5char" > five_char.md
+echo "6char" > six_char.md
 
 # Add _category_.json - catalytics writes to json b/c it calls update_category_json_catalytics_props
 write_category_json_basic_template "$(pwd)"
+addIfNotExist_catalytics_props_to_json "$(pwd)"
 
-cd $SCRIPT_DIR
 ## === Act === ## 
+cd $SCRIPT_DIR
 catalytics "$dirForThisTest" 0 0 "" "exclude" 
 
-
-
 ## === Assert === ## 
+cd "$dirForThisTest"
+jsonUri="$(pwd)/_category_.json"
+## echo $jsonUri
+
+## Check json file
+declare -i expected_docCountSelf=2
+declare -i expected_charCountSelf=11
+# docCount and charCount should contain the same values because there are no subdirectories
+expected_hasSubdirectories=false
 
 
-# $(cat <<EOF
-# {
-#   "label": "$folder_name",
-#   "link": {
-#     "type": "generated-index",
-#     "description": "PK_ToDo Write Description"
-#   }
-# }
-# EOF
-# )
+## Possible improvement - loop over array of properties (or the big alternative... compare the entire json)
+cd ../../
+## echo "$(pwd)"
 
+actualDCSelf=$(jq '.catalytics.overall.docCountSelf' $jsonUri)
+if [[ "$actualDCSelf" == "null" ]]; then
+    echo "Case Failed .catalytics.overall.docCountSelf is not present in _category_.json"
+else 
+  if [[ $actualDCSelf -eq $expected_docCountSelf ]]; then
+      echo "Case Passed"
+  else 
+      echo "Case Failed - Actual: ${actualDCSelf} Expected: ${expected_docCountSelf}"
+  fi
+fi
+
+## Check that we have the updated arrays 
+
+## print category.json for verbose output
+if [[ "$1" == "-v" ]]; then
+  printf "%s\n" "$(jq '.' $jsonUri)"
+fi
 
 ## === Cleanup === ## 
 # script execution should not change pwd 
 cd $START_DIR
 
-#Remove temp directories and files
+# Remove temp directories and files
 
 

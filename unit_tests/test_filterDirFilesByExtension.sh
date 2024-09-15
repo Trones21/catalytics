@@ -48,10 +48,8 @@ actual="${filesOut[@]}"
 # Compare the strings with double quotes to handle spaces correctly
 if [ "$expected" == "$actual" ]; then
     echo "Test Passed - filterDirFilesByExtension"
-    echo "Expected: $expected"
-    echo "Actual: $actual"
 else
-    echo "Expected not equal to Actual"
+    echo "Test Failed - Expected not equal to Actual"
     echo "Expected: $expected"
     echo "Actual: $actual"
 fi

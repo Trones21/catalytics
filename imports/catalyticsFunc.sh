@@ -9,17 +9,16 @@ helpers=$(resolve_import "helpers.sh") && source "$helpers"
 ### Does file filtering, then counts, builds json 
 ### Finally writes file through call to update_category_json_catalytics_props
 catalytics() {
-    #Parse Params
+    # Parse Params
     local dir="$1"
-    local childrenCharCount=$2
-    local childrenFileCount=$3
+    local -i childrenCharCount=$2
+    local -i childrenFileCount=$3
     local extensions="$4"
     local includeOrExclude="$5"
     
-
-    #Additional Vars
-    local docCountSelf=0
-    local characterCountSelf=0
+    # Additional Vars
+    local -i docCountSelf=0
+    local -i characterCountSelf=0
     local hasSubdirectories=false
     local docs=()
     local subDirs=()
@@ -31,16 +30,15 @@ catalytics() {
 
     # Count documents and calculate character counts
     for file in "${filesToAnalyze[@]}"; do
-        echo "outer{$file}"
         if [ -f "$file" ]; then
         docCountSelf=$(($docCountSelf + 1))
         characterCountSelf=$(($characterCountSelf + $(calculate_character_count "$file")))
         docs+=("{\"filename\": \"$(basename "$file")\", \"characterCount\": $(calculate_character_count "$file")}")
         fi
     done
-    echo "count complete"
-    local docCount=($docCountSelf+$childrenFileCount)
-    local characterCount=($characterCountSelf+$childrenCharCount)
+
+    local -i docCount=$(($docCountSelf + $childrenFileCount)) 
+    local -i characterCount=$(($characterCountSelf + $childrenCharCount))
 
     # Check for subdirectories
     for subDir in "$dir"/*/; do
@@ -49,16 +47,16 @@ catalytics() {
         subDirs+=("{\"subDirName\": \"$(basename "$subDir")\"}")
         fi
     done
+    
+    runDateTime=$(date +"%Y-%m-%d %H:%M:%S")
 
-    echo "start json"
-    # Generate the JSON template with all the values
+    #### Generate the JSON template with all the values 
     catalytics_object=$(cat <<EOF
-        {
+ {
             "overall": {
+            "runDatetime": $runDateTime,
             "docCount": $docCount,
             "characterCount": $characterCount,
-            "docCountSelf": $docCountSelf,
-            "characterCountSelf": $characterCountSelf,
             "hasSubdirectories": $hasSubdirectories
             },
             "docs": [
@@ -70,8 +68,10 @@ catalytics() {
         }
 EOF
 )
-    echo $catalytics_object
-    echo "call writer"
-    update_category_json_catalytics_props "$dir" "$catalytics_object" "$exclude" 
+
+update_category_json_catalytics_props "$dir" "$catalytics_object" "false"
+
   
 }
+
+# $(IFS=,; echo "${subDirs[*]}")

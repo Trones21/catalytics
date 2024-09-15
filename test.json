@@ -1,0 +1,24 @@
+{
+    "overall": {
+        "docCount": 3,
+        "characterCount": 17,
+        "docCountSelf": 3,
+        "characterCountSelf": 17,
+        "hasSubdirectories": false
+    },
+    "docs": [
+        {
+            "filename": "five_char.md",
+            "characterCount": 6
+        },
+        {
+            "filename": "six_char.md",
+            "characterCount": 6
+        },
+        {
+            "filename": "test.txt",
+            "characterCount": 5
+        }
+    ],
+    "subDirs": []
+}

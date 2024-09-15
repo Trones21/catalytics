@@ -66,7 +66,7 @@ update_category_json_catalytics_props() {
     echo "Error: ${category_file} does not exist."
     return 1
   fi
-
+  
   # Create a temporary file to hold the updated JSON
   local tmp_file=$(mktemp)
 
