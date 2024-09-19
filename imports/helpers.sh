@@ -1,3 +1,4 @@
+#!/bin/bash
 # Function to calculate the character count of a file
 calculate_character_count() {
   local file="$1"
@@ -31,7 +32,9 @@ filterFilesByExtension() {
 
     # Check if the include_or_exclude parameter is valid
     if [[ "$include_or_exclude" != "include" && "$include_or_exclude" != "exclude" ]]; then
-        echo "ERROR: The fourth parameter must be either 'include' or 'exclude'."
+        printf "=================================================================================\n" >&2
+        printf "ERROR: The third parameter must be either 'include' or 'exclude'\. You passed: %s \n" "$include_or_exclude" >&2
+        printf "=================================================================================\n" >&2
         return 1
     fi
 
@@ -46,7 +49,9 @@ filterFilesByExtension() {
         clean=$(echo "$ext" | tr -d '[:space:]')
         firstChar=${clean:0:1}
         if [ "$firstChar" == "." ]; then 
+            printf "=================================================================================\n"
             echo "ERROR: You passed in an extension with a leading dot. This function expects extensions without the leading dot (e.g., 'sql' not '.sql')."
+            printf "=================================================================================\n"
             return 1
         fi
     done

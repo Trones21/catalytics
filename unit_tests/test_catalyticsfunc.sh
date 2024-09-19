@@ -35,7 +35,7 @@ addIfNotExist_catalytics_props_to_json "$(pwd)"
 
 ## === Act === ## 
 cd $SCRIPT_DIR
-catalytics "$dirForThisTest" 0 0 "" "exclude" 
+out=$(catalytics "$dirForThisTest" 0 0 "" "exclude") 
 
 ## === Assert === ## 
 cd "$dirForThisTest"
@@ -43,10 +43,10 @@ jsonUri="$(pwd)/_category_.json"
 ## echo $jsonUri
 
 ## Check json file
-declare -i expected_docCountSelf=2
-declare -i expected_charCountSelf=11
+# declare -i expected_docCountSelf=2
+# declare -i expected_charCountSelf=11
 # docCount and charCount should contain the same values because there are no subdirectories
-expected_hasSubdirectories=false
+#expected_hasSubdirectories=false
 
 
 ## Possible improvement - loop over array of properties (or the big alternative... compare the entire json)
@@ -55,7 +55,7 @@ cd ../../
 
 ## Check 1: Was the catalytics object populated?
 echo "Running Check 1: Was the catalytics object populated?"
-actual_catalytics=$(jq '.catalytics' $jsonUri)
+actual_catalytics=$(jq '.catalytics' "$jsonUri")
 
 if [[ "$actual_catalytics" == "null" ]]; then
     echo "Check Failed .catalytics is not present in _category_.json"
@@ -65,10 +65,10 @@ fi
 
 ## Check 2: Path written correctly 
 echo "Running Check 2: Was the path property written correctly?"
-actual=$(jq -r '.catalytics.myPath' $jsonUri)
+actual=$(jq -r '.catalytics.myPath' "$jsonUri")
 expected="_temp_/catalyticsfunc/"
 
-if [[ $actual == $expected ]]; then
+if [[ $actual == "$expected" ]]; then
     echo "Check Passed"
 else 
     echo "Check Failed: - Actual: ${actual} Expected: ${expected}"
@@ -82,14 +82,25 @@ echo "Check 3 Failed -- To be implemented"
 echo "Running Check 4: Did the subDirs array populate correctly?"
 echo "Check 4 Failed -- To be implemented"
 
+## Check 5: CRUCIAL FOR RECURSION - Is the return value correct?
+echo "Running Check 5: CRUCIAL FOR RECURSION - Is the return value correct?"
+if [[ $out == "2:11" ]]; then
+    echo "Check Passed - Actual: ${out} Expected: 2:11"
+else 
+    echo "Check Failed: - Actual: ${out} Expected: 2:11"
+fi
+
+
+
+
 ## print category.json for verbose output
 if [[ "$1" == "-v" ]]; then
-  printf "%s\n" "$(jq '.' $jsonUri)"
+  printf "_category_.json:\n %s\n" "$(jq '.' "$jsonUri")"
 fi
 
 ## === Cleanup === ## 
 # script execution should not change pwd 
-cd $START_DIR
+cd "$START_DIR" || exit
 
 # Remove temp directories and files
 

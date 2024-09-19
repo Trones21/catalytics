@@ -17,10 +17,10 @@ catalytics() {
     local includeOrExclude="$5"
     
     # Additional Vars
-    local -i docCountSelf=0
+    local -i fileCountSelf=0
     local -i characterCountSelf=0
     local hasSubdirectories=false
-    local docs=()
+    local files=()
     local subDirs=()
 
     local filesToAnalyze=()
@@ -31,14 +31,12 @@ catalytics() {
     # Count documents and calculate character counts
     for file in "${filesToAnalyze[@]}"; do
         if [[ -f "$file" ]]; then
-        docCountSelf=$(($docCountSelf + 1))
-        characterCountSelf=$(($characterCountSelf + $(calculate_character_count "$file")))
-        docs+=("{\"filename\": \"$(basename "$file")\", \"characterCount\": $(calculate_character_count "$file")}")
+            printf "===============file: %s \n" "$file" >&2
+            fileCountSelf=$((fileCountSelf + 1))
+            characterCountSelf=$((characterCountSelf + $(calculate_character_count "$file")))
+            files+=("{\"filename\": \"$(basename "$file")\", \"characterCount\": $(calculate_character_count "$file")}")
         fi
     done
-
-    local -i docCount=$(($docCountSelf + $childrenFileCount)) 
-    local -i characterCount=$(($characterCountSelf + $childrenCharCount))
 
     # Check for subdirectories
     for subDir in "$dir"/*/; do
@@ -52,17 +50,26 @@ catalytics() {
 
     #### Generate the JSON template with all the values 
     # always cast to string if the variable could potentially have spaces 
+    if [[ "$hasSubdirectories" == true ]]; then
+        local subDirStats
+        subDirStats=$(cat <<EOF
+        "fileCountSubDirs": $childrenFileCount,
+        "characterCountSubDirs": $childrenCharCount,
+EOF
+    )
+    fi
     catalytics_object=$(cat <<EOF
  {
             "myPath": "$dir",
             "runDatetime": "$runDatetime",
-            "docCountSelf": $docCount,
-            "characterCountSelf": $characterCount,
+            "fileCountSelf": $fileCountSelf,
+            "characterCountSelf": $characterCountSelf,
+            $subDirStats
             "hasSubdirectories": $hasSubdirectories,
-            "docs": [
-            $(IFS=,; echo "${docs[*]}")
+            "filesSelf": [
+            $(IFS=,; echo "${files[*]}")
             ],
-            "subDirs": [
+            "subDirsImmediate": [
             $(IFS=,; echo "${subDirs[*]}")
             ]
         }
@@ -71,6 +78,10 @@ EOF
 
 update_category_json_catalytics_props "$dir" "$catalytics_object" "false"
 
-  
+# Returning total (for accumlulation )
+local -i fileCount=$((fileCountSelf + childrenFileCount)) 
+local -i characterCount=$((characterCountSelf + childrenCharCount))
+
+echo -n "${fileCount}:${characterCount}"
 }
 

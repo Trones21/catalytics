@@ -19,14 +19,17 @@ Start here: `bash catalytics.sh -h`
 ### Examples
 
 #### Run on the "e2e_test" directory
+
 `bash catalytics.sh --dir ./e2e_test/`
 
 #### List all the file extensions to be found in a directory
+
 `bash catalytics.sh --dir "e2e_test" -list_ext`
 
 ## Tests
 
 ### End to End
+
 e2e_test.sh that runs the script against an unchanging directory, the expected output has been created by manually counting the files and folders.
 
 Run with: `bash e2e_test.sh`
@@ -34,6 +37,7 @@ Run with: `bash e2e_test.sh`
 ### Unit Tests
 
 #### Background 
+
 Started with no unit tests...
 refactor filterfiles func to take a list with paths in multiple directories and wrap in a new func... so a couple of unit tests...
 and some more to verify correct recursive post order processing...  
