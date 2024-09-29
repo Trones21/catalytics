@@ -81,10 +81,10 @@ run_tests() {
     output=$(filterFilesByExtension filesToAnalyze "$extensions" "invalid_mode" filesOut 2>&1)
     
     # Assert
-    if [[ "$output" == *"ERROR: The fourth parameter must be either 'include' or 'exclude'."* ]]; then
+    if [[ "$output" == *"ERROR: The third parameter must be either 'include' or 'exclude'"* ]]; then
         echo "Case 4 Passed"
     else
-        echo "Case 4 Failed"
+        echo "Case 4 Failed - output: $output"
     fi
 
     ## === Case 5: Passing an extension with leading dot (should return an error) === ##

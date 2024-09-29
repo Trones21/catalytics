@@ -33,7 +33,7 @@ filterFilesByExtension() {
     # Check if the include_or_exclude parameter is valid
     if [[ "$include_or_exclude" != "include" && "$include_or_exclude" != "exclude" ]]; then
         printf "=================================================================================\n" >&2
-        printf "ERROR: The third parameter must be either 'include' or 'exclude'\. You passed: %s \n" "$include_or_exclude" >&2
+        echo "ERROR: The third parameter must be either 'include' or 'exclude'\. You passed: %s \n" "$include_or_exclude" >&2
         printf "=================================================================================\n" >&2
         return 1
     fi
