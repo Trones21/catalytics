@@ -171,3 +171,7 @@ Shape of output file:
 - Add CLI param/s for include/exclude by path (or just filename??)
 - -rm_ch | --remove-children: Removes the _category_.json files
   * This SHOULD NOT be run in a docusaurus context because you will lose the other parts of your _category.json_s... maybe we back them up or well you should be using git anyhow....
+
+
+## Contact
+For questions, suggestions, or feedback, please contact [catalytics@gmailisprofessional.com](mailto:catalytics@gmailisprofessional.com)
